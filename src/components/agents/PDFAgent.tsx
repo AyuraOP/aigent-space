@@ -57,30 +57,46 @@ export function PDFAgent({ onClose }: PDFAgentProps) {
       icon={FileText}
       onClose={onClose}
     >
-      <div className="space-y-6">
-        {/* File Upload */}
-        <div className="space-y-2">
-          <Label htmlFor="pdf-upload" className="text-foreground">Upload PDF Document</Label>
-          <div className="relative">
-            <Input
-              id="pdf-upload"
-              type="file"
-              accept=".pdf"
-              onChange={handleFileChange}
-              className="glass border-border/30 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
-            />
-            {file && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-2 flex items-center gap-2 text-sm text-muted-foreground"
-              >
-                <File className="w-4 h-4" />
-                <span>{file.name}</span>
-                <span className="text-xs">({(file.size / (1024 * 1024)).toFixed(2)} MB)</span>
-              </motion.div>
-            )}
+      <div className="space-y-8">
+        {/* Input Section - Centered */}
+        <div className="flex flex-col items-center space-y-6">
+          {/* File Upload */}
+          <div className="w-full max-w-2xl space-y-2">
+            <Label htmlFor="pdf-upload" className="text-foreground text-center block">Upload PDF Document</Label>
+            <div className="relative">
+              <Input
+                id="pdf-upload"
+                type="file"
+                accept=".pdf"
+                onChange={handleFileChange}
+                className="glass border-border/30 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
+              />
+              {file && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 flex items-center justify-center gap-2 text-sm text-muted-foreground"
+                >
+                  <File className="w-4 h-4" />
+                  <span>{file.name}</span>
+                  <span className="text-xs">({(file.size / (1024 * 1024)).toFixed(2)} MB)</span>
+                </motion.div>
+              )}
+            </div>
           </div>
+          
+          {/* Agent Description */}
+          <Card className="glass border-border/30 max-w-3xl">
+            <CardContent className="p-6 text-center">
+              <h3 className="font-semibold text-lg mb-3 gradient-text">How it works</h3>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <p>📄 <strong>What it does:</strong> Upload any PDF document and ask questions about its content. Get instant, accurate answers based on the document.</p>
+                <p>📎 <strong>Input required:</strong> A PDF file (any size) + your questions about the content.</p>
+                <p>💬 <strong>Output:</strong> Conversational Q&A interface with detailed answers, page references, and contextual information.</p>
+                <p>🎯 <strong>Perfect for:</strong> Research papers, contracts, manuals, reports, books, and any document analysis.</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Conversation */}
@@ -127,34 +143,36 @@ export function PDFAgent({ onClose }: PDFAgentProps) {
           </motion.div>
         )}
 
-        {/* Query Input */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="query" className="text-foreground">Ask a Question</Label>
-            <div className="flex gap-2">
-              <Textarea
-                id="query"
-                placeholder="What would you like to know about this document?"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="glass border-border/30 focus:ring-accent resize-none"
-                rows={2}
-                required
-              />
-              <Button 
-                type="submit" 
-                disabled={isLoading || !file || !query}
-                className="bg-gradient-accent hover:shadow-accent px-6 self-end"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Send className="w-4 h-4" />
-                )}
-              </Button>
+        {/* Query Input - Centered */}
+        <div className="flex justify-center">
+          <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="query" className="text-foreground text-center block">Ask a Question</Label>
+              <div className="flex gap-2">
+                <Textarea
+                  id="query"
+                  placeholder="What would you like to know about this document?"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="glass border-border/30 focus:ring-accent resize-none"
+                  rows={2}
+                  required
+                />
+                <Button 
+                  type="submit" 
+                  disabled={isLoading || !file || !query}
+                  className="bg-gradient-accent hover:shadow-accent px-6 self-end"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
 
         {!file && (
           <motion.div

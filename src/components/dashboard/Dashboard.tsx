@@ -19,16 +19,14 @@ const agentComponents = {
 };
 
 export function Dashboard({ onLogout }: DashboardProps) {
-  const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
 
   const handleSelectAgent = (agentId: string) => {
-    if (!selectedAgents.includes(agentId)) {
-      setSelectedAgents(prev => [...prev, agentId]);
-    }
+    setSelectedAgent(agentId);
   };
 
-  const handleCloseAgent = (agentId: string) => {
-    setSelectedAgents(prev => prev.filter(id => id !== agentId));
+  const handleCloseAgent = () => {
+    setSelectedAgent(null);
   };
 
   return (
@@ -65,7 +63,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
       <div className="relative z-10">
         <Sidebar
           onSelectAgent={handleSelectAgent}
-          selectedAgents={selectedAgents}
+          selectedAgents={selectedAgent ? [selectedAgent] : []}
           onLogout={onLogout}
         />
       </div>
@@ -100,29 +98,29 @@ export function Dashboard({ onLogout }: DashboardProps) {
             </div>
           </motion.div>
 
-          {/* Agent Panels */}
-          <div className="space-y-6">
-            <AnimatePresence mode="popLayout">
-              {selectedAgents.map((agentId) => {
-                const AgentComponent = agentComponents[agentId as keyof typeof agentComponents];
+          {/* Agent Panel */}
+          <div className="flex justify-center">
+            <AnimatePresence mode="wait">
+              {selectedAgent && (() => {
+                const AgentComponent = agentComponents[selectedAgent as keyof typeof agentComponents];
                 return AgentComponent ? (
                   <motion.div
-                    key={agentId}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
+                    key={selectedAgent}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                    transition={{ duration: 0.3, type: "spring" }}
+                    className="w-full max-w-4xl"
                   >
-                    <AgentComponent onClose={() => handleCloseAgent(agentId)} />
+                    <AgentComponent onClose={handleCloseAgent} />
                   </motion.div>
                 ) : null;
-              })}
+              })()}
             </AnimatePresence>
           </div>
 
           {/* Welcome State */}
-          {selectedAgents.length === 0 && (
+          {!selectedAgent && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -41,7 +41,7 @@ export function AgentPanel({
       }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
       transition={{ duration: 0.3, type: "spring" }}
-      className="w-full max-w-2xl"
+      className="w-full"
     >
       <Card className="glass-panel border-0 hover-lift">
         <CardHeader className="pb-3">

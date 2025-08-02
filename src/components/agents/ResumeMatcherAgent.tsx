@@ -76,62 +76,78 @@ export function ResumeMatcherAgent({ onClose }: ResumeMatcherAgentProps) {
       icon={BrainCircuit}
       onClose={onClose}
     >
-      <div className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Resume Upload */}
-          <div className="space-y-2">
-            <Label htmlFor="resume-upload" className="text-foreground">Upload Resume</Label>
-            <div className="relative">
-              <input
-                id="resume-upload"
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleResumeChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-              <div className="glass border-border/30 border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
-                <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
-                  {resumeFile ? resumeFile.name : "Click to upload resume"}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  PDF, DOC, DOCX (max 5MB)
-                </p>
+      <div className="space-y-8">
+        {/* Input Section - Centered */}
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-full max-w-2xl space-y-6">
+            {/* Resume Upload */}
+            <div className="space-y-2">
+              <Label htmlFor="resume-upload" className="text-foreground text-center block">Upload Resume</Label>
+              <div className="relative">
+                <input
+                  id="resume-upload"
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleResumeChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <div className="glass border-border/30 border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
+                  <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    {resumeFile ? resumeFile.name : "Click to upload resume"}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    PDF, DOC, DOCX (max 5MB)
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Job Description */}
-          <div className="space-y-2">
-            <Label htmlFor="job-description" className="text-foreground">Job Description</Label>
-            <Textarea
-              id="job-description"
-              placeholder="Paste the job description here..."
-              value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
-              className="glass border-border/30 focus:ring-accent min-h-[160px] resize-none"
-              required
-            />
+            {/* Job Description */}
+            <div className="space-y-2">
+              <Label htmlFor="job-description" className="text-foreground text-center block">Job Description</Label>
+              <Textarea
+                id="job-description"
+                placeholder="Paste the job description here..."
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+                className="glass border-border/30 focus:ring-accent min-h-[160px] resize-none"
+                required
+              />
+            </div>
+
+            <Button 
+              onClick={handleSubmit}
+              disabled={isLoading || !resumeFile || !jobDescription}
+              className="w-full bg-gradient-primary hover:shadow-glow py-3"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Analyzing Match...
+                </>
+              ) : (
+                <>
+                  <Zap className="w-5 h-5 mr-2" />
+                  Analyze Match
+                </>
+              )}
+            </Button>
           </div>
+          
+          {/* Agent Description */}
+          <Card className="glass border-border/30 max-w-3xl">
+            <CardContent className="p-6 text-center">
+              <h3 className="font-semibold text-lg mb-3 gradient-text">How it works</h3>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <p>🎯 <strong>What it does:</strong> Analyzes your resume against a job description and provides detailed compatibility insights with actionable recommendations.</p>
+                <p>📎 <strong>Input required:</strong> Your resume file (PDF, DOC, DOCX) + the target job description text.</p>
+                <p>📊 <strong>Output:</strong> Match percentage, section breakdown, keyword analysis, strengths, improvement areas, and specific recommendations.</p>
+                <p>💼 <strong>Perfect for:</strong> Job applications, career planning, resume optimization, and interview preparation.</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-
-        <Button 
-          onClick={handleSubmit}
-          disabled={isLoading || !resumeFile || !jobDescription}
-          className="w-full bg-gradient-primary hover:shadow-glow py-3"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Analyzing Match...
-            </>
-          ) : (
-            <>
-              <Zap className="w-5 h-5 mr-2" />
-              Analyze Match
-            </>
-          )}
-        </Button>
 
         {isLoading && (
           <motion.div

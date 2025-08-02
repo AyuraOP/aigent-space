@@ -58,34 +58,50 @@ export function YoutubeAgent({ onClose }: YoutubeAgentProps) {
       icon={Youtube}
       onClose={onClose}
     >
-      <div className="space-y-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="youtube-url" className="text-foreground">YouTube URL</Label>
-            <div className="flex gap-2">
-              <Input
-                id="youtube-url"
-                type="url"
-                placeholder="https://www.youtube.com/watch?v=..."
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                className="glass border-border/30 focus:ring-accent"
-                required
-              />
-              <Button 
-                type="submit" 
-                disabled={isLoading || !url}
-                className="bg-gradient-accent hover:shadow-accent px-6"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Send className="w-4 h-4" />
-                )}
-              </Button>
+      <div className="space-y-8">
+        {/* Input Section - Centered */}
+        <div className="flex flex-col items-center space-y-6">
+          <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="youtube-url" className="text-foreground text-center block">YouTube URL</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="youtube-url"
+                  type="url"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="glass border-border/30 focus:ring-accent text-center"
+                  required
+                />
+                <Button 
+                  type="submit" 
+                  disabled={isLoading || !url}
+                  className="bg-gradient-accent hover:shadow-accent px-6"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+          
+          {/* Agent Description */}
+          <Card className="glass border-border/30 max-w-3xl">
+            <CardContent className="p-6 text-center">
+              <h3 className="font-semibold text-lg mb-3 gradient-text">How it works</h3>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <p>🎯 <strong>What it does:</strong> Analyzes any YouTube video and extracts key insights, main topics, and provides a comprehensive summary.</p>
+                <p>📝 <strong>Input required:</strong> Simply paste a valid YouTube URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)</p>
+                <p>⚡ <strong>Output:</strong> Video metadata, key points, main topics, and an AI-generated summary of the content.</p>
+                <p>💡 <strong>Perfect for:</strong> Research, learning, content analysis, and quickly understanding video content without watching.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {isLoading && (
           <motion.div

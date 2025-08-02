@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [pendingEmail, setPendingEmail] = useState<string>("");
 
   // API base URL - replace with your Django backend URL
-  const API_BASE_URL = process.env.VITE_API_URL || "http://localhost:8000";
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     // Check for existing token on app start
